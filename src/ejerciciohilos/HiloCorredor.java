@@ -1,8 +1,4 @@
 package ejerciciohilos;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Clase HiloCorredor
  * @author Stiven Cruz
@@ -12,9 +8,9 @@ import java.util.logging.Logger;
 public class HiloCorredor extends Thread {
     
     /**
-     * Posición inicial del corredor
+     * Posición del corredor
      */
-    private int posicionInicial;
+    private int posicion;
     
     /**
      * Equipo del corredor
@@ -28,11 +24,12 @@ public class HiloCorredor extends Thread {
 
     /**
      * Constructor
-     * @param posicionInicial posición inicial del corredor
+     * @param posicion posición del corredor
      * @param equipo equipo al que pertence el corredor
+     * @param simbolo simbolo que será mostrado en consola para el corredor
      */
-    public HiloCorredor(int posicionInicial, Equipo equipo, char simbolo) {
-        this.posicionInicial = posicionInicial;
+    public HiloCorredor(int posicion, Equipo equipo, char simbolo) {
+        this.posicion = posicion;
         this.equipo = equipo;
         this.simbolo = simbolo;
     }
@@ -40,7 +37,7 @@ public class HiloCorredor extends Thread {
     @Override
     public void run(){
         while(equipo.getPosicion() != 150){
-            if (posicionInicial == equipo.getPosicion()){
+            if (posicion == equipo.getPosicion()){
                 int recorrido = 0;
                 while (recorrido != 49){
                     // Dar pasos random
@@ -56,8 +53,8 @@ public class HiloCorredor extends Thread {
                         //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
                         Thread.currentThread().interrupt();
                     }
-                    // Modificar la posición Inicial del corredor
-                    posicionInicial += pasos;
+                    // Modificar la posición del corredor
+                    posicion += pasos;
                 }
                 //System.out.println("Posición Inicial: " + posicionInicial);
                 // Modificar la posición del equipo
@@ -89,19 +86,19 @@ public class HiloCorredor extends Thread {
     }
 
     /**
-     * Se encarga de retornar la posición inicial del corredor
-     * @return posición inicial
+     * Se encarga de retornar la posición del corredor
+     * @return posición
      */
-    public int getPosicionInicial() {
-        return posicionInicial;
+    public int getPosicion() {
+        return posicion;
     }
 
     /**
-     * Se encarga de modificar la posición inicial del correador
-     * @param posicionInicial 
+     * Se encarga de modificar la posición del correador
+     * @param posicion
      */
-    public void setPosicionInicial(int posicionInicial) {
-        this.posicionInicial = posicionInicial;
+    public void setPosicionInicial(int posicion) {
+        this.posicion = posicion;
     }
 
     /**

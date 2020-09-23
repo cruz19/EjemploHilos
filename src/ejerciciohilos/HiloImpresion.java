@@ -28,34 +28,48 @@ public class HiloImpresion extends Thread {
         while(true){
             try {
                 String mensajeGanador = "";
-                boolean marcado, detener = false;
+                boolean marcado, finalizado = false;
                 // Recorrer todos los equipos
                 for (HiloCorredor[] equipoCorredor : equiposCorredores) {
-                    String color = equipoCorredor[0].getEquipo().getColor();
+                    // Obtener el equipo actual
+                    Equipo equipo = equipoCorredor[0].getEquipo();
+                    // Cambia el color de la consola
+                    System.out.print(equipo.getColor());
+                    // Imprimir el número del equipo
+                    System.out.print("EQUIPO " + equipo.getNumero() + " ");
+                    // Dibujar pista/recorrido
                     for (int i = 0; i < 150; i++) {
                         marcado = false;
+                        // Recorrer los corredores del equipo
                         for (HiloCorredor corredor : equipoCorredor) {
-                            if (corredor.getPosicionInicial() == i){
-                                System.out.print(color + corredor.getSimbolo());
+                            // Si la posición actual del corredor es igual al i, se coloca el simbolo
+                            if (corredor.getPosicion() == i){
+                                System.out.print(corredor.getSimbolo());
                                 marcado = true;
                             }
-                            if (corredor.getPosicionInicial() == 149){
-                                mensajeGanador = corredor.getEquipo().getColor();
-                                mensajeGanador += "GANADOR EQUIPO " + corredor.getEquipo().getNumero();
-                                detener = true;
+                            // Si un corredor ya finalizó el recorrido
+                            if (corredor.getPosicion() == 149){
+                                mensajeGanador = equipo.getColor();
+                                mensajeGanador += "\t¡¡¡ GANA EL EQUIPO " + equipo.getNumero() + " !!!\n\n";
+                                finalizado = true;
                             }
                         }
+                        // Si ningún corredor del equipo tiene la posición marcada
                         if (!marcado)
-                            System.out.print(color + "_");
+                            System.out.print("_");
                     }
+                    // Resetear el color de la consola
                     System.out.println(ConsoleColors.RESET);
                 }
                 System.out.println("\n\n");
                 
-                if (detener){
+                // Una vez dibujado todos los corredores, de todos los equipos se verifica si alguno finalizó el recorrido
+                if (finalizado){
+                    // detener todos los hilos aún activos
                     detenerHilos();
-                    System.out.println(mensajeGanador);
-                    System.out.println(ConsoleColors.RESET);
+                    // Imprimir el mensaje del equipo ganador
+                    System.out.println(mensajeGanador + ConsoleColors.RESET);
+                    // Salir del while de impresión
                     break;
                 }
                 
