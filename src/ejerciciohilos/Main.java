@@ -13,27 +13,27 @@ public class Main {
      */
     public static void main(String[] args) {
         // Creación de los 3 equipos
-        Equipo equipo1 = new Equipo(1, ConsoleColors.BLUE);
+        Equipo equipo1 = new Equipo(1, ConsoleColors.GREEN);
         Equipo equipo2 = new Equipo(2, ConsoleColors.RED);
-        Equipo equipo3 = new Equipo(3, ConsoleColors.GREEN);
+        Equipo equipo3 = new Equipo(3, ConsoleColors.BLUE);
         
         // Creación de todos los corredores agrupados en equipos
         HiloCorredor[] equipoCorredores1 = new HiloCorredor[]{
             new HiloCorredor(0, equipo1, 'X'),
             new HiloCorredor(50, equipo1, 'O'),
-            new HiloCorredor(100, equipo1, '#')
+            new HiloCorredor(100, equipo1, '$')
         };
         
         HiloCorredor[] equipoCorredores2 = new HiloCorredor[]{
             new HiloCorredor(0, equipo2, 'X'),
             new HiloCorredor(50, equipo2, 'O'),
-            new HiloCorredor(100, equipo2, '#')
+            new HiloCorredor(100, equipo2, '$')
         };
         
         HiloCorredor[] equipoCorredores3 = new HiloCorredor[]{
             new HiloCorredor(0, equipo3, 'X'),
             new HiloCorredor(50, equipo3, 'O'),
-            new HiloCorredor(100, equipo3, '#')
+            new HiloCorredor(100, equipo3, '$')
         };
         
         // Crear array de todos los equipos corredores

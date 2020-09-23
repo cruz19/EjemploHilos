@@ -36,43 +36,50 @@ public class HiloCorredor extends Thread {
     
     @Override
     public void run(){
-        while(equipo.getPosicion() != 150){
-            if (posicion == equipo.getPosicion()){
-                int recorrido = 0;
-                while (recorrido != 49){
-                    // Dar pasos random
-                    int pasos = obtenerPasos();
-                    if ((recorrido + pasos) > 49){
-                        pasos = 49 - recorrido;
-                    }
-                    recorrido += pasos;
-                    // Esperar un segundo
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
-                        Thread.currentThread().interrupt();
-                    }
-                    // Modificar la posición del corredor
-                    posicion += pasos;
+        iniciar();
+    }
+    
+    private void iniciar(){
+        if (posicion == equipo.getPosicion()){
+            moverCorredor();
+        } else {
+            synchronized(equipo){
+                try {
+                    equipo.wait();
+                } catch (InterruptedException ex) {
+                    //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
+                    Thread.currentThread().interrupt();
                 }
-                //System.out.println("Posición Inicial: " + posicionInicial);
-                // Modificar la posición del equipo
-                synchronized(equipo){
-                    equipo.setPosicion(equipo.getPosicion() + 50);
-                    //System.out.println("Posición: " + equipo.getPosicion());
-                    equipo.notifyAll();
-                }
-            } else {
-                synchronized(equipo){
-                    try {
-                        equipo.wait();
-                    } catch (InterruptedException ex) {
-                        //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
-                        Thread.currentThread().interrupt();
-                    }
-                }
+                iniciar();
             }
+        }
+    }
+    
+    private void moverCorredor(){
+        int recorrido = 0;
+        while (recorrido != 49){
+            // Dar pasos random
+            int pasos = obtenerPasos();
+            if ((recorrido + pasos) > 49){
+                pasos = 49 - recorrido;
+            }
+            recorrido += pasos;
+            // Esperar un segundo
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
+                Thread.currentThread().interrupt();
+            }
+            // Modificar la posición del corredor
+            posicion += pasos;
+        }
+        //System.out.println("Posición Inicial: " + posicionInicial);
+        // Modificar la posición del equipo
+        synchronized(equipo){
+            equipo.setPosicion(equipo.getPosicion() + 50);
+            //System.out.println("Posición: " + equipo.getPosicion());
+            equipo.notifyAll();
         }
     }
     

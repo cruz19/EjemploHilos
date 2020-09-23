@@ -58,8 +58,8 @@ public class HiloImpresion extends Thread {
                         if (!marcado)
                             System.out.print("_");
                     }
-                    // Resetear el color de la consola
-                    System.out.println(ConsoleColors.RESET);
+                    // Salto de línea
+                    System.out.println();
                 }
                 System.out.println("\n\n");
                 
