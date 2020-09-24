@@ -5,7 +5,7 @@ package ejerciciohilos;
  * @since 22/09/2020
  * @version 1.0.0
  */
-public class HiloCorredor extends Thread {
+public class Corredor extends Thread {
     
     /**
      * Actual posición del corredor
@@ -28,7 +28,7 @@ public class HiloCorredor extends Thread {
      * @param equipo equipo al que pertence el corredor
      * @param simbolo simbolo que será mostrado en consola para el corredor
      */
-    public HiloCorredor(int posicion, Equipo equipo, char simbolo) {
+    public Corredor(int posicion, Equipo equipo, char simbolo) {
         this.posicion = posicion;
         this.equipo = equipo;
         this.simbolo = simbolo;
@@ -41,7 +41,7 @@ public class HiloCorredor extends Thread {
     
     /**
      * Se encarga de determinar cuál es el corredor que se moverá en la pista
-     * y poner en espera al resto
+     * y poner en espera a los demás
      */
     private void iniciar(){
         // Si la posición inicial del corredor es igual a la posición en la que está el equipo en general
@@ -74,27 +74,27 @@ public class HiloCorredor extends Thread {
      * Finalmente usará el método notifyAll() para despertar al próximo corredor (si lo hay)
      */
     private void moverCorredor(){
-        int recorrido = 0;
+        byte recorrido = 0;
         // El corredor debe completar 49 pasos (uno antes de la posición inicial del relevo o la meta)
-        while (recorrido != 49){
-            // Obtener un número random de pasos entre 1 y 3
-            int pasos = obtenerPasos();
-            // Si le sumamos los pasos obtenidor al recorrido, y supera los 49
-            if ((recorrido + pasos) > 49){
-                // Obtenemos la cantidad de pasos que faltan para llegar a los 49
-                pasos = 49 - recorrido;
-            }
-            // Aumentar el recorrido según los pasos
-            recorrido += pasos;
-            // Esperar un segundo
+        while (recorrido < 49){
             try {
+                // Obtener un número random de pasos entre 1 y 3
+                int pasos = obtenerPasos();
+                // Si le sumamos los pasos obtenidor al recorrido, y supera los 49
+                if ((recorrido + pasos) > 49){
+                    // Obtenemos la cantidad de pasos que faltan para llegar a los 49
+                    pasos = 49 - recorrido;
+                }
+                // Aumentar el recorrido según los pasos
+                recorrido += pasos;
+                // Esperar un segundo
                 Thread.sleep(1000);
+                // Modificar la posición actual del corredor
+                this.posicion += pasos;
             } catch (InterruptedException ex) {
                 //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
                 Thread.currentThread().interrupt();
             }
-            // Modificar la posición actual del corredor
-            this.posicion += pasos;
         }
         //System.out.println("Posición Inicial: " + posicionInicial);
         /*

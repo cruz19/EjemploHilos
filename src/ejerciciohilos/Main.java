@@ -18,28 +18,28 @@ public class Main {
         Equipo equipo3 = new Equipo(3, ConsoleColors.BLUE);
         
         // Array de los corredores del equipo1
-        HiloCorredor[] equipoCorredores1 = new HiloCorredor[]{
-            new HiloCorredor(0, equipo1, 'X'),
-            new HiloCorredor(50, equipo1, 'O'),
-            new HiloCorredor(100, equipo1, '$')
+        Corredor[] equipoCorredores1 = new Corredor[]{
+            new Corredor(0, equipo1, 'X'),
+            new Corredor(50, equipo1, 'O'),
+            new Corredor(100, equipo1, '#')
         };
         
         // Array de los corredores del equipo 2
-        HiloCorredor[] equipoCorredores2 = new HiloCorredor[]{
-            new HiloCorredor(0, equipo2, 'X'),
-            new HiloCorredor(50, equipo2, 'O'),
-            new HiloCorredor(100, equipo2, '$')
+        Corredor[] equipoCorredores2 = new Corredor[]{
+            new Corredor(0, equipo2, 'X'),
+            new Corredor(50, equipo2, 'O'),
+            new Corredor(100, equipo2, '#')
         };
         
         // Array de los corredores del equipo 3
-        HiloCorredor[] equipoCorredores3 = new HiloCorredor[]{
-            new HiloCorredor(0, equipo3, 'X'),
-            new HiloCorredor(50, equipo3, 'O'),
-            new HiloCorredor(100, equipo3, '$')
+        Corredor[] equipoCorredores3 = new Corredor[]{
+            new Corredor(0, equipo3, 'X'),
+            new Corredor(50, equipo3, 'O'),
+            new Corredor(100, equipo3, '#')
         };
         
         // Array con todos los equipos corredores para la impresión
-        HiloCorredor[][] equiposCorredores = new HiloCorredor[][]{
+        Corredor[][] equiposCorredores = new Corredor[][]{
             equipoCorredores1,
             equipoCorredores2,
             equipoCorredores3
@@ -47,14 +47,17 @@ public class Main {
         
         // INICIAR TODOS LOS HILOS CORREDORES
         // Recorrer equipos
-        for (HiloCorredor[] equipoCorredor : equiposCorredores) {
+        for (Corredor[] equipoCorredor : equiposCorredores) {
             // Recorrer corredores
-            for (HiloCorredor corredor : equipoCorredor) {
+            for (Corredor corredor : equipoCorredor) {
                 corredor.start();
             }
         }
         
-        // Hilo encargado de imprimir la posición de los corredores en consola
+        /**
+         * Hilo encargado de imprimir la posición de los corredores en consola
+         * y el resultado de la carrera
+         */
         HiloImpresion hiloImpresion = new HiloImpresion(equiposCorredores);
         hiloImpresion.start();
     }
