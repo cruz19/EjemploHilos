@@ -1,6 +1,6 @@
 package ejerciciohilos;
 /**
- * Clase HiloCorredor
+ * Clase Hilo Corredor
  * @author Stiven Cruz
  * @since 22/09/2020
  * @version 1.0.0
@@ -8,7 +8,7 @@ package ejerciciohilos;
 public class HiloCorredor extends Thread {
     
     /**
-     * Posición del corredor
+     * Actual posición del corredor
      */
     private int posicion;
     
@@ -18,7 +18,7 @@ public class HiloCorredor extends Thread {
     private Equipo equipo;
     
     /**
-     * Símbolo del corredor en la pista 
+     * Símbolo que se imprimirá en consola del corredor 
      */
     private char simbolo;
 
@@ -39,10 +39,17 @@ public class HiloCorredor extends Thread {
         iniciar();
     }
     
+    /**
+     * Se encarga de determinar cuál es el corredor que se moverá en la pista
+     * y poner en espera al resto
+     */
     private void iniciar(){
-        if (posicion == equipo.getPosicion()){
+        // Si la posición inicial del corredor es igual a la posición en la que está el equipo en general
+        if (this.posicion == equipo.getPosicion()){
+            // El corredor hace su recorrido
             moverCorredor();
         } else {
+            // Se sincroniza el objeto equipo y se pone en espera el corredor
             synchronized(equipo){
                 try {
                     equipo.wait();
@@ -50,19 +57,34 @@ public class HiloCorredor extends Thread {
                     //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
                     Thread.currentThread().interrupt();
                 }
+                /*
+                    Una vez sea despertado el corredor, se vuelve a llamar este mismo método
+                    pero con la diferencia de que ahora la posición del equipo ha cambiado,
+                    así que ahora es posible que sea su turno para realizar el recorrido
+                */
                 iniciar();
             }
         }
     }
     
+    /**
+     * Se encarga de hacer el recorrido del corredor
+     * Cada corredor hará un total de 49 pasos hasta llegar a su relevo o a la meta
+     * Cuando complete los 49 pasos de recorrido, la posición actual del equipo aumentará
+     * Finalmente usará el método notifyAll() para despertar al próximo corredor (si lo hay)
+     */
     private void moverCorredor(){
         int recorrido = 0;
+        // El corredor debe completar 49 pasos (uno antes de la posición inicial del relevo o la meta)
         while (recorrido != 49){
-            // Dar pasos random
+            // Obtener un número random de pasos entre 1 y 3
             int pasos = obtenerPasos();
+            // Si le sumamos los pasos obtenidor al recorrido, y supera los 49
             if ((recorrido + pasos) > 49){
+                // Obtenemos la cantidad de pasos que faltan para llegar a los 49
                 pasos = 49 - recorrido;
             }
+            // Aumentar el recorrido según los pasos
             recorrido += pasos;
             // Esperar un segundo
             try {
@@ -71,14 +93,18 @@ public class HiloCorredor extends Thread {
                 //Logger.getLogger(HiloCorredor.class.getName()).log(Level.SEVERE, null, ex);
                 Thread.currentThread().interrupt();
             }
-            // Modificar la posición del corredor
-            posicion += pasos;
+            // Modificar la posición actual del corredor
+            this.posicion += pasos;
         }
         //System.out.println("Posición Inicial: " + posicionInicial);
-        // Modificar la posición del equipo
+        /*
+            Se sincroniza el objeto equipo y se modifica la posición actual del equipo, 
+            es necesario para que el próximo corredor commienze su recorrido (si lo hay)
+        */
         synchronized(equipo){
             equipo.setPosicion(equipo.getPosicion() + 50);
             //System.out.println("Posición: " + equipo.getPosicion());
+            // Despierta a los corredores del equipo para que continuen el recorrido (si los hay)
             equipo.notifyAll();
         }
     }

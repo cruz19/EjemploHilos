@@ -1,7 +1,7 @@
 package ejerciciohilos;
 
 /**
- *
+ * Clase para retornar los colores de consola de los equipos
  * @author Stiven Cruz
  * @since 22/09/2020
  * @version 1.0.0

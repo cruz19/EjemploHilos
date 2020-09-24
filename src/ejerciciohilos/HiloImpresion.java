@@ -25,11 +25,12 @@ public class HiloImpresion extends Thread {
     
     @Override
     public void run(){
+        // Repetir el procedimiento hasta que haya un equipo ganador
         while(true){
             try {
                 String mensajeGanador = "";
-                boolean marcado, finalizado = false;
-                // Recorrer todos los equipos
+                boolean marcado, meta = false;
+                // Recorrer todos los equipos de corredores
                 for (HiloCorredor[] equipoCorredor : equiposCorredores) {
                     // Obtener el equipo actual
                     Equipo equipo = equipoCorredor[0].getEquipo();
@@ -39,41 +40,44 @@ public class HiloImpresion extends Thread {
                     System.out.print("EQUIPO " + equipo.getNumero() + " ");
                     // Dibujar pista/recorrido
                     for (int i = 0; i < 150; i++) {
+                        // El fragmento de pista no ha sido marcado aún
                         marcado = false;
                         // Recorrer los corredores del equipo
                         for (HiloCorredor corredor : equipoCorredor) {
-                            // Si la posición actual del corredor es igual al i, se coloca el simbolo
+                            // Si la posición actual del corredor es igual al i (fragmento), se coloca el simbolo del corredor
                             if (corredor.getPosicion() == i){
                                 System.out.print(corredor.getSimbolo());
                                 marcado = true;
                             }
-                            // Si un corredor ya finalizó el recorrido
-                            if (corredor.getPosicion() == 149){
-                                mensajeGanador = equipo.getColor();
-                                mensajeGanador += "\t¡¡¡ GANA EL EQUIPO " + equipo.getNumero() + " !!!\n\n";
-                                finalizado = true;
-                            }
                         }
-                        // Si ningún corredor del equipo tiene la posición marcada
+                        // Si ningún corredor del equipo tiene la posición/fragmento marcada
                         if (!marcado)
                             System.out.print("_");
                     }
-                    // Salto de línea
-                    System.out.println();
+                    // Verificar si el equipo ha llegado a la meta
+                    if (equipo.getPosicion() == 150){
+                        mensajeGanador = equipo.getColor();
+                        mensajeGanador += "\t¡¡¡ GANÓ EL EQUIPO " + equipo.getNumero() + " !!!";
+                        meta = true;
+                    }
+                    // Salto de línea para la impresión del siguiente equipo
+                    System.out.println("°°°");
                 }
+                // Saltos de línea para diferenciar las impresiones en consola por segundo
                 System.out.println("\n\n");
                 
-                // Una vez dibujado todos los corredores, de todos los equipos se verifica si alguno finalizó el recorrido
-                if (finalizado){
-                    // detener todos los hilos aún activos
+                // Antes de la siguiente iteración, verificar si algún equipo ya finalizo el recorrido
+                if (meta){
+                    // Detener el resto de hilos activos
                     detenerHilos();
-                    // Imprimir el mensaje del equipo ganador
-                    System.out.println(mensajeGanador + ConsoleColors.RESET);
+                    // Imprimir el ganador en consola
+                    System.out.print(mensajeGanador);
+                    System.out.println(ConsoleColors.RESET + "\n\n");
                     // Salir del while de impresión
                     break;
                 }
                 
-                // Imprimir cada segundo
+                // Pausa para imprimir cada segundo
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(HiloImpresion.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,8 +85,13 @@ public class HiloImpresion extends Thread {
         }
     }
     
+    /**
+     * Se encarga de interrumpir todos los hilos que todavía este activos/vivos
+     */
     private void detenerHilos(){
+        // Recorrer los equipos de corredores
         for (HiloCorredor[] equipoCorredor : equiposCorredores) {
+            // Recorrer los corredores del equipo
             for (HiloCorredor corredor : equipoCorredor) {
                 if (corredor.isAlive()){
                     corredor.interrupt();

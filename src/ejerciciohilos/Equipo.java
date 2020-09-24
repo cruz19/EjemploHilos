@@ -24,7 +24,7 @@ public class Equipo {
     /**
      * Constructor
      * @param numero número del equipo
-     * @param color color del equipo
+     * @param color color del equipo en consola
      */
     public Equipo(int numero, String color) {
         this.numero = numero;
