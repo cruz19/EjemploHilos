@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 /**
  * Hilo para imprimir los corredores
+ * @author Daniel Zambrano
  * @author Stiven Cruz
  * @since 22/09/2020
  * @version 1.0.0
@@ -33,7 +34,7 @@ public class HiloImpresion extends Thread {
                 boolean marcado;
                 // Recorrer todos los equipos de corredores
                 for (Corredor[] equipoCorredor : equiposCorredores) {
-                    // Obtener el equipo de cualquier
+                    // Obtener el equipo de cualquiera de los corredores del array
                     Equipo equipo = equipoCorredor[0].getEquipo();
                     // Cambia el color de la consola para el equipo
                     System.out.print(equipo.getColor());

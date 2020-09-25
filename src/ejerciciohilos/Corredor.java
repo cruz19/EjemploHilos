@@ -2,6 +2,7 @@ package ejerciciohilos;
 /**
  * Clase Hilo Corredor
  * @author Stiven Cruz
+ * @author Daniel Zambrano
  * @since 22/09/2020
  * @version 1.0.0
  */
@@ -74,7 +75,7 @@ public class Corredor extends Thread {
      * Finalmente usará el método notifyAll() para despertar al próximo corredor (si lo hay)
      */
     private void moverCorredor(){
-        byte recorrido = 0;
+        int recorrido = 0;
         // El corredor debe completar 49 pasos (uno antes de la posición inicial del relevo o la meta)
         while (recorrido < 49){
             try {
@@ -96,7 +97,7 @@ public class Corredor extends Thread {
                 Thread.currentThread().interrupt();
             }
         }
-        //System.out.println("Posición Inicial: " + posicionInicial);
+        //System.out.println("Posición: " + posicion);
         /*
             Se sincroniza el objeto equipo y se modifica la posición actual del equipo, 
             es necesario para que el próximo corredor commienze su recorrido (si lo hay)

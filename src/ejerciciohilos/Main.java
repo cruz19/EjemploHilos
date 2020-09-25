@@ -3,6 +3,7 @@ package ejerciciohilos;
 /**
  * Clase Principal
  * @author Steven Cruz
+ * @author Daniel Zambrano
  * @since 22/09/2020
  * @version 1.0.0
  */
