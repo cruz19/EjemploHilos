@@ -71,20 +71,20 @@ public class Corredor extends Thread {
     /**
      * Se encarga de hacer el recorrido del corredor
      * Cada corredor hará un total de 49 pasos hasta llegar a su relevo o a la meta
-     * Cuando complete los 49 pasos de recorrido, la posición actual del equipo aumentará
+     * Cuando complete los 50 pasos de recorrido, la posición actual del equipo aumentará
      * Finalmente usará el método notifyAll() para despertar al próximo corredor (si lo hay)
      */
     private void moverCorredor(){
         int recorrido = 0;
-        // El corredor debe completar 49 pasos (uno antes de la posición inicial del relevo o la meta)
-        while (recorrido < 49){
+        // El corredor debe completar 50 pasos
+        while (recorrido < 50){
             try {
                 // Obtener un número random de pasos entre 1 y 3
                 int pasos = obtenerPasos();
-                // Si le sumamos los pasos obtenidor al recorrido, y supera los 49
-                if ((recorrido + pasos) > 49){
-                    // Obtenemos la cantidad de pasos que faltan para llegar a los 49
-                    pasos = 49 - recorrido;
+                // Si le sumamos los pasos obtenidor al recorrido, y supera los 50
+                if ((recorrido + pasos) > 50){
+                    // Obtenemos la cantidad de pasos que faltan para llegar a los 50
+                    pasos = 50 - recorrido;
                 }
                 // Aumentar el recorrido según los pasos
                 recorrido += pasos;
@@ -103,7 +103,7 @@ public class Corredor extends Thread {
             es necesario para que el próximo corredor commienze su recorrido (si lo hay)
         */
         synchronized(equipo){
-            equipo.setPosicion(equipo.getPosicion() + 50);
+            equipo.setPosicion(this.posicion);
             //System.out.println("Posición: " + equipo.getPosicion());
             // Despierta a los corredores del equipo para que continuen el recorrido (si los hay)
             equipo.notifyAll();

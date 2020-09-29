@@ -1,0 +1,18 @@
+        // PRUEBAS
+        while(true){
+           for (Corredor[] equipoCorredor : equiposCorredores) {
+                System.out.print("EQUIPO " + equipoCorredor[0].getEquipo().getNumero() + " -> ");
+                for (Corredor corredor : equipoCorredor) {
+                    if (corredor.isAlive()){
+                        System.out.print(corredor.getPosicion() + " ");
+                    }
+                }
+                System.out.println("");
+            }
+            System.out.println("");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }

@@ -41,13 +41,13 @@ public class HiloImpresion extends Thread {
                     // Mostrar el número del equipo
                     System.out.print("EQUIPO " + equipo.getNumero() + " ");
                     // Dibujar pista/recorrido y posición de los corredores del equipo
-                    for (int i = 0; i < 150; i++) {
+                    for (int i = 0; i <= 150; i++) {
                         // El fragmento de pista no ha sido marcado aún
                         marcado = false;
                         // Recorrer los corredores del equipo
                         for (Corredor corredor : equipoCorredor) {
                             // Si la posición actual del corredor es igual al i (fragmento), se coloca el simbolo del corredor
-                            if (corredor.getPosicion() == i){
+                            if (corredor.getPosicion() == i && !marcado){
                                 System.out.print(corredor.getSimbolo());
                                 marcado = true;
                             }
